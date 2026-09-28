@@ -1,8 +1,10 @@
 FROM node:lts-trixie-slim AS base
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends ca-certificates curl git wget ripgrep python3 \
+  && apt-get install -y --no-install-recommends ca-certificates curl git wget ripgrep python3 build-essential \
   && rm -rf /var/lib/apt/lists/* \
-  && corepack enable
+  && corepack enable \
+  && curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
+ENV PATH="/root/.cargo/bin:${PATH}"
 
 FROM base AS deps
 WORKDIR /app
@@ -12,11 +14,6 @@ RUN git clone --depth 1 https://github.com/paperclipai/paperclip.git . \
 FROM base AS build
 WORKDIR /app
 COPY --from=deps /app /app
-RUN apt-get update \
-  && apt-get install -y --no-install-recommends build-essential \
-  && rm -rf /var/lib/apt/lists/*
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
-ENV PATH="/root/.cargo/bin:${PATH}"
 RUN pnpm --filter @paperclipai/ui build \
   && pnpm --filter @paperclipai/plugin-sdk build \
   && pnpm --filter @paperclipai/server build \

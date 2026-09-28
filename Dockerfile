@@ -34,6 +34,8 @@ RUN chmod +x /usr/local/bin/start.sh
 
 ENV NODE_ENV=production \
   HOME=/paperclip \
+  npm_config_cache=/tmp/.npm \
+  XDG_CACHE_HOME=/tmp/.cache \
   HOST=0.0.0.0 \
   PORT=3100 \
   SERVE_UI=true \

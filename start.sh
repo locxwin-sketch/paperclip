@@ -24,7 +24,7 @@ CONF
   chown node:node "$CONFIG_PATH"
 fi
 
-gosu node node --import ./server/node_modules/tsx/dist/loader.mjs server/dist/index.js &
+gosu node node --max-old-space-size=640 --import ./server/node_modules/tsx/dist/loader.mjs server/dist/index.js &
 SERVER_PID=$!
 
 until wget -qO /dev/null http://localhost:${PORT:-3100}/api/health 2>/dev/null; do

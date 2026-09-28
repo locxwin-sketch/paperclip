@@ -22,7 +22,7 @@ RUN pnpm --filter @paperclipai/ui build \
 FROM base AS production
 WORKDIR /app
 COPY --from=build /app /app
-RUN npm install -g @openai/codex@0.158.0
+RUN npm install -g @openai/codex@0.158.0 @anthropic-ai/claude-code@2.1.283
 RUN apt-get update \
   && apt-get install -y --no-install-recommends openssh-client jq gosu \
   && rm -rf /var/lib/apt/lists/* \

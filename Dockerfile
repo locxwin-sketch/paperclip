@@ -9,7 +9,7 @@ ENV PATH="/root/.cargo/bin:${PATH}"
 FROM base AS deps
 WORKDIR /app
 RUN git clone --depth 1 https://github.com/paperclipai/paperclip.git . \
-  && pnpm install --frozen-lockfile
+  && pnpm install --no-frozen-lockfile
 
 FROM base AS build
 WORKDIR /app
